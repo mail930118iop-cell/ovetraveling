@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>短網址產生器介面</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --bg-color: #f5f7fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .input-group:focus-within {
+            border-color: var(--primary-color);
+        }
+
+        .prefix {
+            background: #eee;
+            padding: 12px 15px;
+            color: #666;
+            font-weight: bold;
+            border-right: 1px solid #ddd;
+            user-select: none;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .preview {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #888;
+            word-break: break-all;
+        }
+
+        button {
+            margin-top: 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        #full-url {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Please enter the code_認証コードを入力してください。</h2>
+    
+    <div class="input-group">
+        <span class="prefix">https://reurl.cc/</span>
+        <input type="text" id="suffix" placeholder="For example：7beAay" oninput="updatePreview()">
+    </div>
+
+    <div class="preview">
+        預覽網址：<span id="full-url">https://reurl.cc/</span>
+    </div>
+
+    <button onclick="navigate()">File Download</button>
+</div>
+
+<script>
+    function updatePreview() {
+        const prefix = "https://reurl.cc/";
+        const suffix = document.getElementById('suffix').value;
+        // 只允許輸入英文和數字（過濾掉特殊符號）
+        const sanitizedSuffix = suffix.replace(/[^a-zA-Z0-9]/g, '');
+        document.getElementById('suffix').value = sanitizedSuffix;
+        
+        document.getElementById('full-url').innerText = prefix + sanitizedSuffix;
+    }
+
+    function navigate() {
+        const url = document.getElementById('full-url').innerText;
+        if (document.getElementById('suffix').value === "") {
+            alert("請先輸入英文或數字後綴！");
+            return;
+        }
+        window.open(url, '_blank');
+    }
+</script>
+
+</body>
+</html>
