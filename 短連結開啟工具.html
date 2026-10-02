@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>輸入暗號</title>
+    <style>
+        :root {
+            --primary-color: #ff8fb1;
+            --primary-dark: #ff6f9a;
+            --accent: #8ab6ff;
+            --text-color: #4a4a5c;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body { height: 100%; }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang TC', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Microsoft JhengHei', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #ffe3ee 0%, #e8e4ff 45%, #dcefff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 漂浮的可愛小星星／愛心 */
+        .deco {
+            position: fixed;
+            font-size: 1.6rem;
+            opacity: 0.55;
+            user-select: none;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+        .deco.d1 { top: 12%; left: 12%; animation-delay: 0s; }
+        .deco.d2 { top: 20%; right: 14%; animation-delay: 1.2s; font-size: 2rem; }
+        .deco.d3 { bottom: 16%; left: 18%; animation-delay: 2.1s; }
+        .deco.d4 { bottom: 22%; right: 12%; animation-delay: 0.7s; font-size: 1.9rem; }
+        .deco.d5 { top: 48%; left: 6%; animation-delay: 1.7s; font-size: 1.3rem; }
+        .deco.d6 { top: 60%; right: 7%; animation-delay: 2.6s; font-size: 1.4rem; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-4deg); }
+            50%      { transform: translateY(-16px) rotate(6deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 2.25rem 2rem;
+            border-radius: 22px;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 18px 40px rgba(255, 143, 177, 0.28);
+            width: 100%;
+            max-width: 540px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            margin: 0 0 0.4rem;
+            color: #e5507f;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            font-size: 0.84rem;
+            color: #8a8a9e;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .subtitle span { display: block; }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            border: 2px solid #ffd0e0;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #fff;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-group:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(255, 143, 177, 0.18);
+        }
+
+        .prefix {
+            background: #fff0f5;
+            padding: 13px 14px;
+            color: #d174a0;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-right: 1px solid #ffd0e0;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 0;
+            border: none;
+            padding: 13px;
+            font-size: 16px;
+            outline: none;
+            color: var(--text-color);
+            background: transparent;
+        }
+
+        .preview {
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: #9a9aae;
+            word-break: break-all;
+        }
+
+        #full-url {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        button {
+            margin-top: 1.6rem;
+            background: linear-gradient(135deg, #ff9dbb 0%, #ff7fa6 55%, #f96f9d 100%);
+            color: #fff;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 8px 18px rgba(255, 127, 166, 0.4);
+            transition: transform 0.15s, box-shadow 0.2s, background 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 22px rgba(255, 127, 166, 0.5);
+        }
+        button:active { transform: translateY(0); }
+
+        .note {
+            margin-top: 1.4rem;
+            font-size: 0.76rem;
+            color: #b3b3c2;
+            line-height: 1.8;
+        }
+        .note span { display: block; }
+
+        @media (max-width: 420px) {
+            .container { padding: 1.75rem 1.25rem; }
+            h1 { font-size: 1.15rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="deco d1">🌸</div>
+    <div class="deco d2">💗</div>
+    <div class="deco d3">⭐</div>
+    <div class="deco d4">🫧</div>
+    <div class="deco d5">✨</div>
+    <div class="deco d6">🌟</div>
+
+<div class="container">
+    <h1>輸入暗號　/　Enter Passcode　/　暗号を入力</h1>
+    <p class="subtitle">
+        <span>請輸入暗號以開啟連結，僅接受英文與數字。</span>
+        <span>Enter the passcode to open the link (letters &amp; numbers only).</span>
+        <span>暗号を入力してリンクを開きます（英数字のみ）。</span>
+    </p>
+
+    <div class="input-group">
+        <span class="prefix">https://reurl.cc/</span>
+        <input type="text" id="suffix" placeholder="例如 AbCd12 / e.g. AbCd12 / 例：AbCd12" oninput="updatePreview()" autocomplete="off">
+    </div>
+
+    <div class="preview">
+        將開啟 / Open / 開く：<span id="full-url">https://reurl.cc/</span>
+    </div>
+
+    <button onclick="navigate()">開啟連結　Open　開く</button>
+
+    <p class="note">
+        <span>本頁僅協助開啟 reurl.cc 的短連結，不會收集或傳送任何資料。</span>
+        <span>This page only opens reurl.cc short links. No data is collected or sent.</span>
+        <span>このページは reurl.cc の短縮リンクを開くだけで、データの収集・送信は行いません。</span>
+    </p>
+</div>
+
+<script>
+    var PREFIX = "https://reurl.cc/";
+
+    function updatePreview() {
+        var input = document.getElementById('suffix');
+        var suffix = input.value.replace(/[^a-zA-Z0-9]/g, '');
+        input.value = suffix;
+        document.getElementById('full-url').innerText = PREFIX + suffix;
+    }
+
+    function navigate() {
+        var suffix = document.getElementById('suffix').value;
+        if (suffix === "") {
+            alert("請輸入暗號！ / Please enter the passcode. / 暗号を入力してください。");
+            return;
+        }
+        window.open(PREFIX + suffix, '_blank');
+    }
+</script>
+
+</body>
+</html>
