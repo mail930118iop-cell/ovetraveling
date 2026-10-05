@@ -11,6 +11,8 @@ os.makedirs(CACHE, exist_ok=True)
 
 BOOTH_URL = "https://mail930115iop.booth.pm/"
 PICT_URL  = "https://pictspace.net/stores/detail/lovetraveling"
+FANSKY_URL = "https://www.fansky.net/mail930115iop?tab=products"
+FANSKY_API = "https://www.fansky.net/api/v1/creator/mail930115iop/shop/products"
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
 def fetch(url, referer=None):
@@ -72,6 +74,36 @@ def pict_items():
             "img": img.group(1),
             "r18": "R18" in b,
         })
+    return out
+
+def fansky_items():
+    out, seen, page = [], set(), 1
+    while page <= 100:
+        raw, _ = fetch("%s?page=%d&pageSize=10" % (FANSKY_API, page), referer="https://www.fansky.net/")
+        try:
+            j = json.loads(raw.decode("utf-8", "replace"))
+        except Exception:
+            break
+        prods = j.get("data", {}).get("products", [])
+        if not prods:
+            break
+        fresh = 0
+        for p in prods:
+            pid = p.get("publicId")
+            if not pid or pid in seen:
+                continue
+            seen.add(pid)
+            fresh += 1
+            cover = p.get("cover", "")
+            if cover and "?" not in cover:
+                cover += "?width=384"
+            out.append({"name": p.get("title", "").strip(),
+                        "price": p.get("effectiveSalesPrice") or p.get("salesPrice") or "",
+                        "link": "https://www.fansky.net/mail930115iop/%s" % pid,
+                        "img": cover, "cur": "CN\u00a5", "r18": False})
+        if len(prods) < 10 or fresh == 0:
+            break
+        page += 1
     return out
 
 def thumb_from_url(url, width=200, q=6, referer=None, square=False):
@@ -152,16 +184,18 @@ def pixiv_section():
 
 def card(it, img_src):
     r18 = ' <span style="color:#e5507f;font-size:.68rem;">R18</span>' if it.get("r18") else ""
+    cur = it.get("cur", "\u00a5")
     return ('<a class="shop-card" data-name="%s" href="%s" target="_blank" rel="noopener">'
             '<img src="%s" loading="lazy" alt="">'
             '<div class="shop-name">%s%s</div>'
-            '<div class="shop-price">\u00a5%s</div></a>'
+            '<div class="shop-price">%s%s</div></a>'
             ) % (html.escape(it["name"], quote=True), it["link"], img_src,
-                 html.escape(it["name"]), r18, it["price"])
+                 html.escape(it["name"]), r18, cur, it["price"])
 
 def main():
     booth = booth_items()
     pict = pict_items()
+    fansky = fansky_items()
 
     # pictSPACE 縮圖（並行）
     with ThreadPoolExecutor(max_workers=6) as ex:
@@ -183,6 +217,14 @@ def main():
     for it, img in zip(pict, pict_imgs):
         parts.append(card(it, img))
     parts.append('</div></div></div>')
+
+    parts.append('<div class="store-col">'
+                 '<div class="store-title">FANSKY\uff08\u4eba\u6c11\u5e63\u4ed8\u6b3e\uff09 \u00b7 <a href="%s" target="_blank" rel="noopener">fansky.net</a></div>'
+                 '<input class="shop-search" type="search" placeholder="\u641c\u5c0b FANSKY \u5546\u54c1 / Search\u2026" data-grid="grid-fansky" oninput="filterStore(this)">'
+                 '<div class="store-box"><div class="shop-grid" id="grid-fansky">' % FANSKY_URL)
+    for it in fansky:
+        parts.append(card(it, it["img"]))
+    parts.append('</div></div></div>')
     parts.append('</div>')
     products = "\n".join(parts)
 
@@ -191,6 +233,6 @@ def main():
     if "<!--PIXIV-->" in tpl:
         out = out.replace("<!--PIXIV-->", pixiv_section())
     open(os.path.join(BASE, "index.html"), "w", encoding="utf-8").write(out)
-    print("OK booth=%d pict=%d bytes=%d" % (len(booth), len(pict), len(out)))
+    print("OK booth=%d pict=%d fansky=%d bytes=%d" % (len(booth), len(pict), len(fansky), len(out)))
 
 main()

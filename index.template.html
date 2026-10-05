@@ -13,7 +13,7 @@
     background:linear-gradient(135deg,#ffe3ee 0%,#e8e4ff 45%,#dcefff 100%);
     display:flex; justify-content:center; align-items:flex-start;
   }
-  .wrap{ width:100%; max-width:980px; }
+  .wrap{ width:100%; max-width:1120px; }
   .card{
     background:rgba(255,255,255,.85); backdrop-filter:blur(10px);
     border:2px solid rgba(255,255,255,.9); border-radius:22px;
@@ -32,6 +32,12 @@
 
   .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; align-items:start; }
   .two-col .card{ margin-bottom:0; }
+  .col{ display:flex; flex-direction:column; gap:1.2rem; }
+  .link-row{ display:flex; align-items:center; gap:.5rem; text-decoration:none; color:var(--text); background:#f6f8ff; border:1px solid #dfe8ff; border-radius:12px; padding:.6rem .8rem; font-size:.86rem; }
+  .link-row:hover{ border-color:#8ab6ff; }
+  .link-row .lk{ color:#8ab6ff; font-weight:700; }
+  .links-grid{ display:grid; grid-template-columns:1fr 1fr; gap:.5rem; }
+  .links-grid .link-row{ justify-content:center; font-weight:700; color:#d174a0; }
   @media(max-width:720px){ .two-col{ grid-template-columns:1fr; } }
   h1{ font-size:1.2rem; margin:0 0 .3rem; color:#e5507f; text-align:center; line-height:1.5; }
   .sub{ text-align:center; font-size:.8rem; color:#8a8a9e; margin-bottom:1.1rem; }
@@ -40,8 +46,8 @@
   .lang-block:first-of-type{ border-top:none; }
   .lang-name{ font-weight:700; color:var(--blue); font-size:.9rem; margin-bottom:.25rem; }
   .row{ line-height:1.65; font-size:.92rem; margin:.15rem 0; }
-  .stores{ display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; }
-  @media(max-width:720px){ .stores{ grid-template-columns:1fr; } }
+  .stores{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+  @media(max-width:900px){ .stores{ grid-template-columns:1fr; } }
   .store-title{ font-size:.95rem; color:#d174a0; font-weight:700; margin:0 0 .6rem; }
   .store-title a{ color:#8ab6ff; font-weight:600; text-decoration:none; font-size:.78rem; }
   .shop-search{ width:100%; margin:0 0 .6rem; padding:.55rem .7rem; border:2px solid #ffd0e0; border-radius:12px; font-size:.85rem; outline:none; background:#fff; }
@@ -55,7 +61,7 @@
   .refresh-btn{ background:#8ab6ff; color:#fff; border:none; border-radius:10px; padding:.45rem .85rem; font-size:.8rem; font-weight:700; cursor:pointer; box-shadow:0 4px 10px rgba(138,182,255,.4); }
   .refresh-btn:hover{ background:#6fa2ff; }
   .store-box{ max-height:560px; overflow-y:auto; padding:.7rem; border:1px solid #ffe1ec; border-radius:14px; background:#fffafc; }
-  .shop-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(105px,1fr)); gap:.7rem; }
+  .shop-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:.6rem; }
   .shop-card{ display:block; text-decoration:none; color:var(--text); background:#fff; border:1px solid #ffe1ec; border-radius:14px; overflow:hidden; box-shadow:0 6px 14px rgba(255,143,177,.15); }
   .shop-card img{ width:100%; aspect-ratio:1/1; object-fit:cover; display:block; background:#f7f2f5; }
   .shop-name{ font-size:.8rem; line-height:1.35; padding:.5rem .6rem .15rem; height:3.4em; overflow:hidden; }
@@ -78,6 +84,7 @@
 
   <div class="two-col">
 
+   <div class="col">
     <div class="card">
       <h1>下載說明 / How to Download / ダウンロード方法 / 다운로드 안내</h1>
       <p class="sub">Patreon ・ BOOTH</p>
@@ -107,7 +114,9 @@
         <div class="row">・BOOTH pictSPACE: 파일명을 입력(※.zip 불필요)<br>→ 開啟連結 / Open Link</div>
       </div>
     </div>
+   </div>
 
+   <div class="col">
     <div class="card">
       <h1>📬 聯繫方式 / 連絡先情報 / Contact Information / 연락처</h1>
       <a class="discord-btn" href="https://discord.com/invite/Rv7ndHEPDK" target="_blank" rel="noopener">加入 Discord / Join Discord</a>
@@ -132,6 +141,20 @@
         <div class="row">질문이 있거나 보상을 받고 싶으시면, 친구 추가 후 개인 메시지를 보내 주세요!</div>
       </div>
     </div>
+
+    <div class="card">
+      <h1>🔗 其他連結 / Links</h1>
+      <div class="links-grid">
+        <a class="link-row" href="https://www.pixiv.net/users/99882147" target="_blank" rel="noopener">PIXIV</a>
+        <a class="link-row" href="https://www.pixiv.net/users/118793323" target="_blank" rel="noopener">PIXIV</a>
+        <a class="link-row" href="https://www.patreon.com/c/love_AI02" target="_blank" rel="noopener">Patreon</a>
+        <a class="link-row" href="https://x.com/lovetraveling01" target="_blank" rel="noopener">X</a>
+        <a class="link-row" href="https://fansaiko.com/zh/creator/lovetraveling" target="_blank" rel="noopener">fansaiko</a>
+        <a class="link-row" href="https://www.fansky.net/mail930115iop?tab=products" target="_blank" rel="noopener">FANSKY</a>
+        <a class="link-row" href="https://app.unifans.io/c/mail2000iop" target="_blank" rel="noopener">unifans</a>
+      </div>
+    </div>
+   </div>
 
   </div>
 
