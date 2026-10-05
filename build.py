@@ -65,11 +65,16 @@ def pict_items():
         link = re.search(r'data-action="([^"]+)"', b)
         img = re.search(r'<img src="([^"]+)"', b)
         price = re.search(r'([\d,]+)\s*円', b)
-        if not (link and img and price):
+        if not (link and img):
             continue
+        if price:
+            price_val, cur = price.group(1).replace(",", ""), "\u00a5"
+        else:
+            price_val, cur = "\u7121\u6599", ""
         out.append({
             "name": (key.group(1) if key else "").strip(),
-            "price": price.group(1).replace(",", ""),
+            "price": price_val,
+            "cur": cur,
             "link": "https://pictspace.net" + link.group(1),
             "img": img.group(1),
             "r18": "R18" in b,
