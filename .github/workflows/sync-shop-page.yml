@@ -3,8 +3,8 @@ name: sync-shop-page
 # 每天自動重抓 BOOTH / pictSPACE，更新 index.html 並發佈
 on:
   schedule:
-    # 每天 20:00 UTC = 台灣時間隔天 04:00
-    - cron: "0 20 * * *"
+    # 每小時整點（UTC）自動同步一次
+    - cron: "0 * * * *"
   workflow_dispatch: {}   # 也可以在 Actions 頁面手動按 Run
 
 permissions:
