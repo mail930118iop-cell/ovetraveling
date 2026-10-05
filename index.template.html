@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>下載說明 / How to Download</title>
+<style>
+  :root{ --blue:#8ab6ff; --text:#4a4a5c; }
+  *{ box-sizing:border-box; }
+  body{
+    font-family:'Segoe UI','PingFang TC','Hiragino Kaku Gothic ProN','Yu Gothic','Malgun Gothic','Microsoft JhengHei',sans-serif;
+    margin:0; padding:1.5rem 1rem; min-height:100vh; color:var(--text);
+    background:linear-gradient(135deg,#ffe3ee 0%,#e8e4ff 45%,#dcefff 100%);
+    display:flex; justify-content:center; align-items:flex-start;
+  }
+  .wrap{ width:100%; max-width:980px; }
+  .card{
+    background:rgba(255,255,255,.85); backdrop-filter:blur(10px);
+    border:2px solid rgba(255,255,255,.9); border-radius:22px;
+    box-shadow:0 18px 40px rgba(255,143,177,.28);
+    padding:1.8rem 1.5rem; margin-bottom:1.2rem;
+  }
+  .tool{ text-align:center; }
+  h2{ font-size:1.05rem; color:#d174a0; margin:0 0 .9rem; text-align:center; }
+  .input-group{ display:flex; align-items:center; border:2px solid #ffd0e0; border-radius:14px; overflow:hidden; background:#fff; }
+  .prefix{ background:#fff0f5; padding:13px 12px; color:#d174a0; font-weight:700; font-size:.86rem; border-right:1px solid #ffd0e0; white-space:nowrap; }
+  input{ flex:1; min-width:0; border:none; padding:13px; font-size:16px; outline:none; background:transparent; }
+  .preview{ margin-top:.8rem; font-size:.8rem; color:#9a9aae; word-break:break-all; }
+  #full-url{ color:var(--blue); font-weight:700; }
+  button{ margin-top:1.2rem; width:100%; border:none; color:#fff; font-size:16px; font-weight:700; padding:13px 22px; border-radius:14px; cursor:pointer; background:linear-gradient(135deg,#ff9dbb 0%,#ff7fa6 55%,#f96f9d 100%); box-shadow:0 8px 18px rgba(255,127,166,.4); }
+  .note{ text-align:center; font-size:.74rem; color:#b3b3c2; line-height:1.8; margin-top:1rem; }
+
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; align-items:start; }
+  .two-col .card{ margin-bottom:0; }
+  @media(max-width:720px){ .two-col{ grid-template-columns:1fr; } }
+  h1{ font-size:1.2rem; margin:0 0 .3rem; color:#e5507f; text-align:center; line-height:1.5; }
+  .sub{ text-align:center; font-size:.8rem; color:#8a8a9e; margin-bottom:1.1rem; }
+  .pwbox{ text-align:center; font-weight:700; color:#e5507f; font-size:1rem; background:#fff0f5; border:2px dashed #ffc2da; border-radius:14px; padding:.7rem .8rem; margin:0 0 1.1rem; }
+  .lang-block{ padding:.7rem 0; border-top:1px dashed #ffd7e6; }
+  .lang-block:first-of-type{ border-top:none; }
+  .lang-name{ font-weight:700; color:var(--blue); font-size:.9rem; margin-bottom:.25rem; }
+  .row{ line-height:1.65; font-size:.92rem; margin:.15rem 0; }
+  .stores{ display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; }
+  @media(max-width:720px){ .stores{ grid-template-columns:1fr; } }
+  .store-title{ font-size:.95rem; color:#d174a0; font-weight:700; margin:0 0 .6rem; }
+  .store-title a{ color:#8ab6ff; font-weight:600; text-decoration:none; font-size:.78rem; }
+  .shop-search{ width:100%; margin:0 0 .6rem; padding:.55rem .7rem; border:2px solid #ffd0e0; border-radius:12px; font-size:.85rem; outline:none; background:#fff; }
+  .shop-search:focus{ border-color:#ff8fb1; }
+  .pixiv-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:.2rem; }
+  @media(max-width:720px){ .pixiv-grid{ grid-template-columns:1fr; } }
+  .discord-btn{ display:block; text-align:center; text-decoration:none; margin:0 0 1rem; background:#5865F2; color:#fff; font-weight:700; font-size:.86rem; padding:.6rem .8rem; border-radius:12px; }
+  .discord-btn:hover{ background:#4752c4; }
+  .store-box{ max-height:560px; overflow-y:auto; padding:.7rem; border:1px solid #ffe1ec; border-radius:14px; background:#fffafc; }
+  .shop-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(105px,1fr)); gap:.7rem; }
+  .shop-card{ display:block; text-decoration:none; color:var(--text); background:#fff; border:1px solid #ffe1ec; border-radius:14px; overflow:hidden; box-shadow:0 6px 14px rgba(255,143,177,.15); }
+  .shop-card img{ width:100%; aspect-ratio:1/1; object-fit:cover; display:block; background:#f7f2f5; }
+  .shop-name{ font-size:.8rem; line-height:1.35; padding:.5rem .6rem .15rem; height:3.4em; overflow:hidden; }
+  .shop-price{ font-size:.85rem; font-weight:700; color:#e5507f; padding:0 .6rem .6rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="card tool">
+    <h2>🔗 開啟連結 / Open Link</h2>
+    <div class="input-group">
+      <span class="prefix">https://reurl.cc/</span>
+      <input type="text" id="suffix" placeholder="AbCd12" oninput="updatePreview()" autocomplete="off">
+    </div>
+    <div class="preview">將開啟 / Open：<span id="full-url">https://reurl.cc/</span></div>
+    <button onclick="navigate()">開啟連結　Open</button>
+    <p class="note">本頁僅協助開啟 reurl.cc 短連結。<br>This page only opens reurl.cc short links.</p>
+  </div>
+
+  <div class="two-col">
+
+    <div class="card">
+      <h1>下載說明　/　How to Download　/　ダウンロード方法　/　다운로드 안내</h1>
+      <p class="sub">Patreon ・ BOOTH</p>
+      <div class="pwbox">🔑 密碼 / Password / パスワード / 비밀번호：12345</div>
+
+      <div class="lang-block">
+        <div class="lang-name">中文</div>
+        <div class="row">・Patreon：輸入貼文第一行的英數字代碼 → 按「下載」</div>
+        <div class="row">・BOOTH：輸入檔案名稱（不用加 .zip）→ 按「下載」</div>
+      </div>
+
+      <div class="lang-block">
+        <div class="lang-name">日本語</div>
+        <div class="row">・Patreon：投稿1行目の英数字コードを入力 → ダウンロード</div>
+        <div class="row">・BOOTH：ファイル名を入力（※.zipは不要）→ ダウンロード</div>
+      </div>
+
+      <div class="lang-block">
+        <div class="lang-name">English</div>
+        <div class="row">・Patreon: enter the code on the first line of the post → Download</div>
+        <div class="row">・BOOTH: enter the file name (no .zip needed) → Download</div>
+      </div>
+
+      <div class="lang-block">
+        <div class="lang-name">한국어</div>
+        <div class="row">・Patreon: 게시물 첫 줄의 코드를 입력 → 다운로드</div>
+        <div class="row">・BOOTH: 파일명을 입력(※.zip 불필요) → 다운로드</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h1>📬 聯繫方式　/　連絡先情報　/　Contact Information　/　연락처</h1>
+      <p class="sub">Discord ID：<b style="color:#e5507f;">lovetraveling_sp</b></p>
+      <a class="discord-btn" href="https://discord.com/invite/Rv7ndHEPDK" target="_blank" rel="noopener">加入 Discord / Join Discord</a>
+
+      <div class="lang-block">
+        <div class="lang-name">中文</div>
+        <div class="row">如果有任何問題，或想領取方案獎勵，請直接加我好友並私訊！</div>
+      </div>
+
+      <div class="lang-block">
+        <div class="lang-name">日本語</div>
+        <div class="row">ご質問がある場合、または報酬を受け取りたい場合は、私を友達に追加してプライベートメッセージを送ってください！</div>
+      </div>
+
+      <div class="lang-block">
+        <div class="lang-name">English</div>
+        <div class="row">If you have any questions or would like to receive a reward, please add me as a friend and send me a private message!</div>
+      </div>
+
+      <div class="lang-block">
+        <div class="lang-name">한국어</div>
+        <div class="row">질문이 있거나 보상을 받고 싶으시면, 친구 추가 후 개인 메시지를 보내 주세요!</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <h1>🛍️ 商品　/　Shop　/　商品一覧　/　상품</h1>
+    <!--PRODUCTS-->
+  </div>
+
+</div>
+<script>
+  var PREFIX = "https://reurl.cc/";
+  function updatePreview(){
+    var input = document.getElementById('suffix');
+    input.value = input.value.replace(/[^a-zA-Z0-9]/g,'');
+    document.getElementById('full-url').innerText = PREFIX + input.value;
+  }
+  function navigate(){
+    var s = document.getElementById('suffix').value;
+    if(s===""){ alert("請輸入暗號！ / Please enter the passcode."); return; }
+    window.open(PREFIX + s, '_blank');
+  }
+  function filterStore(el){
+    var grid = document.getElementById(el.getAttribute('data-grid'));
+    if(!grid) return;
+    var q = el.value.trim().toLowerCase();
+    var cards = grid.querySelectorAll('.shop-card');
+    for(var i=0;i<cards.length;i++){
+      var nm = (cards[i].getAttribute('data-name')||'').toLowerCase();
+      cards[i].style.display = (!q || nm.indexOf(q)>=0) ? '' : 'none';
+    }
+  }
+</script>
+</body>
+</html>

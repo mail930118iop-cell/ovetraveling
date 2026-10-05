@@ -1,0 +1,47 @@
+name: sync-shop-page
+
+# 每天自動重抓 BOOTH / pictSPACE，更新 index.html 並發佈
+on:
+  schedule:
+    # 每天 20:00 UTC = 台灣時間隔天 04:00
+    - cron: "0 20 * * *"
+  workflow_dispatch: {}   # 也可以在 Actions 頁面手動按 Run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-shop-page
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Ensure curl & ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg curl
+
+      - name: Build shop page
+        run: python3 build.py
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --staged --quiet; then
+            echo "No change."
+          else
+            git commit -m "auto sync products $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
