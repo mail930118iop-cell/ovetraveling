@@ -2,6 +2,9 @@ name: sync-shop-page
 
 # 每天自動重抓 BOOTH / pictSPACE，更新 index.html 並發佈
 on:
+  push:
+    paths:
+      - '.github/workflows/sync-shop-page.yml'
   schedule:
     # GitHub 排程最短為 5 分鐘（1 分鐘不支援，會被忽略/延遲）
     - cron: "*/5 * * * *"
