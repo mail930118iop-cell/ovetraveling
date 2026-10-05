@@ -50,6 +50,10 @@
   @media(max-width:720px){ .pixiv-grid{ grid-template-columns:1fr; } }
   .discord-btn{ display:block; text-align:center; text-decoration:none; margin:0 0 1rem; background:#5865F2; color:#fff; font-weight:700; font-size:.86rem; padding:.6rem .8rem; border-radius:12px; }
   .discord-btn:hover{ background:#4752c4; }
+  .title-row{ display:flex; align-items:center; justify-content:center; gap:.7rem; flex-wrap:wrap; margin-bottom:.2rem; }
+  .title-row h1{ margin:0; }
+  .refresh-btn{ background:#8ab6ff; color:#fff; border:none; border-radius:10px; padding:.45rem .85rem; font-size:.8rem; font-weight:700; cursor:pointer; box-shadow:0 4px 10px rgba(138,182,255,.4); }
+  .refresh-btn:hover{ background:#6fa2ff; }
   .store-box{ max-height:560px; overflow-y:auto; padding:.7rem; border:1px solid #ffe1ec; border-radius:14px; background:#fffafc; }
   .shop-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(105px,1fr)); gap:.7rem; }
   .shop-card{ display:block; text-decoration:none; color:var(--text); background:#fff; border:1px solid #ffe1ec; border-radius:14px; overflow:hidden; box-shadow:0 6px 14px rgba(255,143,177,.15); }
@@ -133,7 +137,10 @@
   </div>
 
   <div class="card">
-    <h1>🛍️ 商品　/　Shop　/　商品一覧　/　상품</h1>
+    <div class="title-row">
+      <h1>🛍️ 商品　/　Shop　/　商品一覧　/　상품</h1>
+      <button class="refresh-btn" onclick="refreshPage()">🔄 重新整理 / Refresh</button>
+    </div>
     <div class="stores">
 <div class="store-col"><div class="store-title">BOOTH · <a href="https://mail930115iop.booth.pm/" target="_blank" rel="noopener">mail930115iop.booth.pm</a></div><input class="shop-search" type="search" placeholder="搜尋 BOOTH 商品 / Search…" data-grid="grid-booth" oninput="filterStore(this)"><div class="store-box"><div class="shop-grid" id="grid-booth">
 <a class="shop-card" data-name="20261004_袴田ひなた _日記" href="https://mail930115iop.booth.pm/items/8943769" target="_blank" rel="noopener"><img src="https://booth.pximg.net/c/300x300_a2_g5/fb8ff8de-4641-41ab-b0d1-e8f17300edef/i/8943769/f96e1c53-8505-448c-a601-194257071a23_base_resized.jpg" loading="lazy" alt=""><div class="shop-name">20261004_袴田ひなた _日記</div><div class="shop-price">¥250</div></a>
@@ -720,6 +727,12 @@
       var nm = (cards[i].getAttribute('data-name')||'').toLowerCase();
       cards[i].style.display = (!q || nm.indexOf(q)>=0) ? '' : 'none';
     }
+  }
+  function refreshPage(){
+    var btns = document.querySelectorAll('.refresh-btn');
+    for(var i=0;i<btns.length;i++) btns[i].textContent = '\u66f4\u65b0\u4e2d\u2026';
+    var p = location.pathname;
+    location.replace(p + '?r=' + Date.now());
   }
 </script>
 </body>
