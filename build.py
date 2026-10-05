@@ -74,16 +74,20 @@ def pict_items():
         })
     return out
 
-def thumb_from_url(url, width=200, q=6, referer=None):
-    key = hashlib.md5(("%s|%d|%d" % (url, width, q)).encode()).hexdigest()
+def thumb_from_url(url, width=200, q=6, referer=None, square=False):
+    key = hashlib.md5(("%s|%d|%d|%d" % (url, width, q, 1 if square else 0)).encode()).hexdigest()
     out = os.path.join(CACHE, key + ".jpg")
     if not os.path.exists(out):
         raw = curl_bin(url, referer=referer)
         tmp = os.path.join(CACHE, key + ".src")
         with open(tmp, "wb") as f:
             f.write(raw)
+        if square:
+            vf = "scale=%d:%d:force_original_aspect_ratio=increase,crop=%d:%d" % (width, width, width, width)
+        else:
+            vf = "scale=%d:-1" % width
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", tmp,
-                        "-vf", "scale=%d:-1" % width, "-q:v", str(q), out], check=True)
+                        "-vf", vf, "-q:v", str(q), out], check=True)
         try:
             os.unlink(tmp)
         except OSError:
@@ -92,7 +96,7 @@ def thumb_from_url(url, width=200, q=6, referer=None):
         return "data:image/jpeg;base64," + base64.b64encode(f.read()).decode()
 
 def pict_thumb(url, width=200, q=6):
-    return thumb_from_url(url, width, q, referer="https://pictspace.net/")
+    return thumb_from_url(url, width, q, referer="https://pictspace.net/", square=True)
 
 PIXIV_USERS = [
     ("lovetraveling_No.1", "99882147"),
