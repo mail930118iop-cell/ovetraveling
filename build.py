@@ -13,6 +13,18 @@ BOOTH_URL = "https://mail930115iop.booth.pm/"
 PICT_URL  = "https://pictspace.net/stores/detail/lovetraveling"
 FANSKY_URL = "https://www.fansky.net/mail930115iop?tab=products"
 FANSKY_API = "https://www.fansky.net/api/v1/creator/mail930115iop/shop/products"
+
+# BOOTH：只保留此日期（含）之後的商品（商品名稱開頭的日期；260423 = 2026-04-23）
+BOOTH_MIN_DATE = 20260419
+
+def _name_date(name):
+    m = re.match(r'^(\d{8})(?=\D|$)', name)
+    if m:
+        return int(m.group(1))
+    m = re.match(r'^(\d{6})(?=\D|$)', name)
+    if m:
+        return int("20" + m.group(1))
+    return None
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
 def fetch(url, referer=None):
@@ -55,6 +67,7 @@ def booth_items():
         if found == 0:
             break
         page += 1
+    out = [it for it in out if (_name_date(it["name"]) or 0) >= BOOTH_MIN_DATE]
     return out
 
 def pict_items():

@@ -46,6 +46,10 @@
   .lang-block:first-of-type{ border-top:none; }
   .lang-name{ font-weight:700; color:var(--blue); font-size:.9rem; margin-bottom:.25rem; }
   .row{ line-height:1.65; font-size:.92rem; margin:.15rem 0; }
+  .row.note{ font-size:.8rem; color:#9a9aae; margin:.35rem 0 .1rem; padding-left:.2rem; }
+  html{ scroll-behavior:smooth; }
+  .jump-btn{ display:block; text-align:center; text-decoration:none; margin-top:1.1rem; background:#8ab6ff; color:#fff; font-weight:700; font-size:.95rem; padding:.7rem .8rem; border-radius:14px; box-shadow:0 6px 14px rgba(138,182,255,.4); }
+  .jump-btn:hover{ background:#6fa2ff; }
   .stores{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
   @media(max-width:900px){ .stores{ grid-template-columns:1fr; } }
   .store-title{ font-size:.95rem; color:#d174a0; font-weight:700; margin:0 0 .6rem; }
@@ -77,9 +81,10 @@
       <span class="prefix">https://reurl.cc/</span>
       <input type="text" id="suffix" placeholder="AbCd12" oninput="updatePreview()" autocomplete="off">
     </div>
-    <div class="preview">將開啟 / Open：<span id="full-url">https://reurl.cc/</span></div>
-    <button onclick="navigate()">開啟連結　Open</button>
+    <div class="preview">將開啟 / Open:<span id="full-url">https://reurl.cc/</span></div>
+    <button onclick="navigate()">開啟連結 Open</button>
     <p class="note">本頁僅協助開啟 reurl.cc 短連結。<br>This page only opens reurl.cc short links.</p>
+    <a class="jump-btn" href="#shop">🛍️ 前往商品 / 商品へ / Go to Shop / 상품 보기 ↓</a>
   </div>
 
   <div class="two-col">
@@ -88,31 +93,36 @@
     <div class="card">
       <h1>下載說明 / How to Download / ダウンロード方法 / 다운로드 안내</h1>
       <p class="sub">Patreon ・ BOOTH</p>
-      <div class="pwbox">🔑 密碼 / Password / パスワード / 비밀번호：12345</div>
+      <div class="pwbox">🔑 密碼 / Password / パスワード / 비밀번호:12345</div>
 
       <div class="lang-block">
         <div class="lang-name">中文</div>
-        <div class="row">・Patreon：輸入貼文第一行的英數字代碼<br>→ 按「開啟連結 / Open Link」</div>
-        <div class="row">・BOOTH pictSPACE：輸入檔案名稱（不用加 .zip）<br>→ 按「開啟連結 / Open Link」</div>
+        <div class="row">・Patreon:輸入貼文第一行的英數字代碼<br>→ 按「開啟連結 / Open Link」</div>
+        <div class="row">・BOOTH pictSPACE:輸入檔案名稱(不用加 .zip)<br>→ 按「開啟連結 / Open Link」</div>
+        <div class="row note">※ BOOTH 下載方式僅適用於介面上顯示的作品;其他作品請到 Discord「作品發表區」找下載檔,購買後檔名(去掉 .zip)即為密碼。</div>
       </div>
 
       <div class="lang-block">
         <div class="lang-name">日本語</div>
-        <div class="row">・Patreon：投稿1行目の英数字コードを入力<br>→ 開啟連結 / Open Link</div>
-        <div class="row">・BOOTH pictSPACE：ファイル名を入力（※.zipは不要）<br>→ 開啟連結 / Open Link</div>
+        <div class="row">・Patreon:投稿1行目の英数字コードを入力<br>→ 開啟連結 / Open Link</div>
+        <div class="row">・BOOTH pictSPACE:ファイル名を入力(※.zipは不要)<br>→ 開啟連結 / Open Link</div>
+        <div class="row note">※ BOOTH のダウンロード方法は、画面に表示されている作品のみ対象です。その他は Discord「作品発表エリア」でファイルを探してください(購入後、ファイル名(.zip を除く)がパスワード)。</div>
       </div>
 
       <div class="lang-block">
         <div class="lang-name">English</div>
         <div class="row">・Patreon: enter the code on the first line of the post<br>→ 開啟連結 / Open Link</div>
         <div class="row">・BOOTH pictSPACE: enter the file name (no .zip needed)<br>→ 開啟連結 / Open Link</div>
+        <div class="row note">※ The BOOTH download method applies only to the works shown on this page. For others, find the file in the Discord "works posting area" (after purchase, the file name without .zip is the password).</div>
       </div>
 
       <div class="lang-block">
         <div class="lang-name">한국어</div>
         <div class="row">・Patreon: 게시물 첫 줄의 코드를 입력<br>→ 開啟連結 / Open Link</div>
         <div class="row">・BOOTH pictSPACE: 파일명을 입력(※.zip 불필요)<br>→ 開啟連結 / Open Link</div>
+        <div class="row note">※ BOOTH 다운로드 방식은 화면에 표시된 작품에만 적용됩니다. 그 외는 Discord '작품 게시 구역'에서 찾아 주세요(구매 후 파일명(.zip 제외)이 비밀번호).</div>
       </div>
+
     </div>
    </div>
 
@@ -123,12 +133,12 @@
 
       <div class="lang-block">
         <div class="lang-name">中文</div>
-        <div class="row">如果有任何問題，或想領取方案獎勵，請直接加我好友並私訊！</div>
+        <div class="row">如果有任何問題,或想領取方案獎勵,請直接加我好友並私訊!</div>
       </div>
 
       <div class="lang-block">
         <div class="lang-name">日本語</div>
-        <div class="row">ご質問がある場合、または報酬を受け取りたい場合は、私を友達に追加してプライベートメッセージを送ってください！</div>
+        <div class="row">ご質問がある場合、または報酬を受け取りたい場合は、私を友達に追加してプライベートメッセージを送ってください!</div>
       </div>
 
       <div class="lang-block">
@@ -158,7 +168,7 @@
 
   </div>
 
-  <div class="card">
+  <div class="card" id="shop">
     <div class="title-row">
       <h1>🛍️ 商品 / Shop / 商品一覧 / 상품</h1>
       <button class="refresh-btn" onclick="refreshPage()">🔄 重新整理 / Refresh</button>
@@ -176,7 +186,7 @@
   }
   function navigate(){
     var s = document.getElementById('suffix').value;
-    if(s===""){ alert("請輸入暗號！ / Please enter the passcode."); return; }
+    if(s===""){ alert("請輸入暗號! / Please enter the passcode."); return; }
     window.open(PREFIX + s, '_blank');
   }
   function filterStore(el){
