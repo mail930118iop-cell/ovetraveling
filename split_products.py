@@ -20,7 +20,7 @@ marker = '</div>\n  </div>\n\n</div>\n<script>'
 marker_at = html.find(marker, start)
 if marker_at < 0:
     raise SystemExit("Could not find the end of the generated stores block")
-stores_end = marker_at + len('</div>')
+stores_end = marker_at
 stores_html = html[start:stores_end]
 
 # Each store column ends with its grid, store-box, and store-col closing tags.
