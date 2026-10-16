@@ -229,11 +229,14 @@ def main():
     parts.append('</div></div></div>')
 
     parts.append('<div class="store-col">'
-                 '<div class="store-title">FANSKY\uff08\u4eba\u6c11\u5e63\u4ed8\u6b3e\uff09 \u00b7 <a href="%s" target="_blank" rel="noopener">fansky.net</a></div>'
-                 '<input class="shop-search" type="search" placeholder="\u641c\u5c0b FANSKY \u5546\u54c1 / Search\u2026" data-grid="grid-fansky" oninput="filterStore(this)">'
-                 '<div class="store-box"><div class="shop-grid" id="grid-fansky">' % FANSKY_URL)
-    for it in fansky:
-        parts.append(card(it, it["img"]))
+                 '<div class="store-title">FANSKY\\uff08\\u4eba\\u6c11\\u5e63\\u4ed8\\u6b3e\\uff09 \\u00b7 <a href="%s" target="_blank" rel="noopener">fansky.net</a>（%d 件）</div>'
+                 '<input class="shop-search" type="search" placeholder="\\u641c\\u5c0b FANSKY \\u5546\\u54c1 / Search\\u2026" data-grid="grid-fansky" oninput="filterStore(this)">'
+                 '<div class="store-box"><div class="shop-grid" id="grid-fansky" data-count="%d">' % (FANSKY_URL, len(fansky), len(fansky)))
+    if fansky:
+        for it in fansky:
+            parts.append(card(it, it["img"]))
+    else:
+        parts.append('<p class="shop-empty">目前暫時無法取得 Fansky 商品，請稍後重新整理。<br>Fansky products are temporarily unavailable.</p>')
     parts.append('</div></div></div>')
 
     parts.append('<div class="store-col">'
