@@ -4,6 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>下載說明 / How to Download</title>
+<!-- Keep the Open Link control available before the large product-image markup is parsed. -->
+<script>
+  var PREFIX = "https://reurl.cc/";
+  function updatePreview(){
+    var input = document.getElementById('suffix');
+    input.value = input.value.replace(/[^a-zA-Z0-9]/g,'');
+    document.getElementById('full-url').innerText = PREFIX + input.value;
+  }
+  function navigate(){
+    var input = document.getElementById('suffix');
+    var s = input ? input.value.trim() : "";
+    if(s===""){ alert("請輸入暗號! / Please enter the passcode."); return; }
+    window.open(PREFIX + s, '_blank', 'noopener');
+  }
+</script>
+
 <style>
   :root{ --blue:#8ab6ff; --text:#4a4a5c; }
   *{ box-sizing:border-box; }
@@ -178,17 +194,6 @@
 
 </div>
 <script>
-  var PREFIX = "https://reurl.cc/";
-  function updatePreview(){
-    var input = document.getElementById('suffix');
-    input.value = input.value.replace(/[^a-zA-Z0-9]/g,'');
-    document.getElementById('full-url').innerText = PREFIX + input.value;
-  }
-  function navigate(){
-    var s = document.getElementById('suffix').value;
-    if(s===""){ alert("請輸入暗號! / Please enter the passcode."); return; }
-    window.open(PREFIX + s, '_blank');
-  }
   function filterStore(el){
     var grid = document.getElementById(el.getAttribute('data-grid'));
     if(!grid) return;
