@@ -7,10 +7,11 @@ on:
       - '.github/workflows/sync-shop-page.yml'
       - 'build.py'
       - 'index.template.html'
+      - 'split_products.py'
   schedule:
     # GitHub 排程最短為 5 分鐘（1 分鐘不支援，會被忽略/延遲）
     - cron: "*/5 * * * *"
-  workflow_dispatch: {}   # 也可以在 Actions 頁面手動按 Run
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -47,11 +48,14 @@ jobs:
       - name: Build shop page
         run: python3 build.py
 
+      - name: Split product markup into asynchronous batches
+        run: python3 split_products.py
+
       - name: Commit & push if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html
+          git add index.html products/
           if git diff --staged --quiet; then
             echo "No change."
           else
