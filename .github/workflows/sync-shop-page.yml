@@ -9,8 +9,8 @@ on:
       - 'index.template.html'
       - 'split_products.py'
   schedule:
-    # GitHub 排程最短為 5 分鐘（1 分鐘不支援，會被忽略/延遲）
-    - cron: "*/5 * * * *"
+    # 每 6 小時同步一次，避免過度觸發造成工作排隊
+    - cron: "17 */6 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -18,7 +18,7 @@ permissions:
 
 concurrency:
   group: sync-shop-page
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -42,8 +42,10 @@ jobs:
 
       - name: Ensure curl & ffmpeg
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg curl
+          if ! command -v curl >/dev/null 2>&1 || ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq ffmpeg curl
+          fi
 
       - name: Build shop page
         run: python3 build.py
@@ -60,5 +62,18 @@ jobs:
             echo "No change."
           else
             git commit -m "auto sync products $(date -u +'%Y-%m-%d %H:%M UTC')"
-            git push
+            # GitHub 偶發 refs 更新錯誤時重試，並先同步遠端避免覆蓋新提交。
+            for attempt in 1 2 3 4 5; do
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+              if [ "$attempt" -eq 5 ]; then
+                echo "Push failed after 5 attempts."
+                exit 1
+              fi
+              echo "Push attempt $attempt failed; syncing main and retrying..."
+              sleep $((attempt * 5))
+              git fetch origin main
+              git rebase origin/main
+            done
           fi
