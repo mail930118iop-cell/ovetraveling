@@ -129,7 +129,7 @@ def fansky_bundle_items():
     page = fetch(FANSKY_URL)[0].decode("utf-8", "replace")
     out, seen = [], set()
     pattern = re.compile(
-        r'<a\\b[^>]*href=["\\'](/mail930115iop/bundle/[^"\\']+)["\\'][^>]*>(.*?)</a>',
+        r"""<a\b[^>]*href=["'](/mail930115iop/bundle/[^"']+)["'][^>]*>(.*?)</a>""",
         re.I | re.S
     )
     for match in pattern.finditer(page):
@@ -137,17 +137,17 @@ def fansky_bundle_items():
         if path in seen:
             continue
         seen.add(path)
-        images = re.findall(r'<img\\b[^>]*src=["\\']([^"\\']+)["\\']', block, re.I)
+        images = re.findall(r"""<img\b[^>]*src=["']([^"']+)["']""", block, re.I)
         if not images:
             continue
         plain = html.unescape(re.sub(r'<[^>]+>', ' ', block))
-        plain = re.sub(r'\\s+', ' ', plain).strip()
-        plain = re.sub(r'-\\s*\\d+%\\s*', ' ', plain)
-        plain = re.sub(r'合集\\s*[·•・]\\s*\\d+\\s*件', ' ', plain)
+        plain = re.sub(r'\s+', ' ', plain).strip()
+        plain = re.sub(r'-\s*\d+%\s*', ' ', plain)
+        plain = re.sub(r'合集\s*[·•・]\s*\d+\s*件', ' ', plain)
         plain = plain.replace('已拥有', ' ')
-        prices = re.findall(r'[¥￥]\\s*([\\d,]+(?:\\.\\d{1,2})?)', plain)
+        prices = re.findall(r'[¥￥]\s*([\d,]+(?:\.\d{1,2})?)', plain)
         name = re.split(r'[¥￥]', plain, maxsplit=1)[0].strip()
-        name = re.sub(r'\\s+', ' ', name)
+        name = re.sub(r'\s+', ' ', name)
         if not name or not prices:
             continue
         out.append({
@@ -160,7 +160,6 @@ def fansky_bundle_items():
             "type_label": "合集",
         })
     return out
-
 def thumb_from_url(url, width=200, q=6, referer=None, square=False):
     key = hashlib.md5(("%s|%d|%d|%d" % (url, width, q, 1 if square else 0)).encode()).hexdigest()
     out = os.path.join(CACHE, key + ".jpg")
