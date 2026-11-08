@@ -126,7 +126,7 @@ def fansky_items():
 
 def fansky_bundle_items():
     """Read public bundle cards from the creator storefront (bundles are not in shop/products)."""
-    page = fetch(FANSKY_URL)[0].decode("utf-8", "replace")
+    page = fetch(FANSKY_URL + "&type=bundle")[0].decode("utf-8", "replace")
     out, seen = [], set()
     pattern = re.compile(
         r"""<a\b[^>]*href=["']((?:https?://(?:www\.)?fansky\.net)?/mail930115iop/bundle/[^"']+)["'][^>]*>(.*?)</a>""",
