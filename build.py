@@ -124,6 +124,42 @@ def fansky_items():
         page += 1
     return out
 
+def fansky_bundle_items():
+    """Read public bundle cards from the creator storefront (bundles are not in shop/products)."""
+    page = fetch(FANSKY_URL)[0].decode("utf-8", "replace")
+    out, seen = [], set()
+    pattern = re.compile(
+        r"""<a\b[^>]*href=["'](/mail930115iop/bundle/[^"']+)["'][^>]*>(.*?)</a>""",
+        re.I | re.S
+    )
+    for match in pattern.finditer(page):
+        path, block = match.groups()
+        if path in seen:
+            continue
+        seen.add(path)
+        images = re.findall(r"""<img\b[^>]*src=["']([^"']+)["']""", block, re.I)
+        if not images:
+            continue
+        plain = html.unescape(re.sub(r'<[^>]+>', ' ', block))
+        plain = re.sub(r'\s+', ' ', plain).strip()
+        plain = re.sub(r'-\s*\d+%\s*', ' ', plain)
+        plain = re.sub(r'合集\s*[·•・]\s*\d+\s*件', ' ', plain)
+        plain = plain.replace('已拥有', ' ')
+        prices = re.findall(r'[¥￥]\s*([\d,]+(?:\.\d{1,2})?)', plain)
+        name = re.split(r'[¥￥]', plain, maxsplit=1)[0].strip()
+        name = re.sub(r'\s+', ' ', name)
+        if not name or not prices:
+            continue
+        out.append({
+            "name": name,
+            "price": prices[-1].replace(",", ""),
+            "cur": "CN¥",
+            "link": urllib.parse.urljoin("https://www.fansky.net/", path),
+            "img": urllib.parse.urljoin("https://www.fansky.net/", images[0]),
+            "r18": False,
+            "type_label": "合集",
+        })
+    return out
 def thumb_from_url(url, width=200, q=6, referer=None, square=False):
     key = hashlib.md5(("%s|%d|%d|%d" % (url, width, q, 1 if square else 0)).encode()).hexdigest()
     out = os.path.join(CACHE, key + ".jpg")
@@ -202,18 +238,21 @@ def pixiv_section():
 
 def card(it, img_src):
     r18 = ' <span style="color:#e5507f;font-size:.68rem;">R18</span>' if it.get("r18") else ""
+    type_label = ' <span style="color:#8ab6ff;font-size:.68rem;">合集</span>' if it.get("type_label") == "合集" else ""
     cur = it.get("cur", "\u00a5")
     return ('<a class="shop-card" data-name="%s" href="%s" target="_blank" rel="noopener">'
             '<img src="%s" loading="lazy" alt="">'
-            '<div class="shop-name">%s%s</div>'
+            '<div class="shop-name">%s%s%s</div>'
             '<div class="shop-price">%s%s</div></a>'
             ) % (html.escape(it["name"], quote=True), it["link"], img_src,
-                 html.escape(it["name"]), r18, cur, it["price"])
+                 html.escape(it["name"]), r18, type_label, cur, it["price"])
 
 def main():
     booth = booth_items()
     pict = pict_items()
     fansky = fansky_items()
+    fansky_bundles = fansky_bundle_items()
+    fansky.extend(fansky_bundles)
 
     # pictSPACE 縮圖（並行）
     with ThreadPoolExecutor(max_workers=6) as ex:
@@ -254,6 +293,6 @@ def main():
     if "<!--PIXIV-->" in tpl:
         out = out.replace("<!--PIXIV-->", pixiv_section())
     open(os.path.join(BASE, "index.html"), "w", encoding="utf-8").write(out)
-    print("OK booth=%d pict=%d fansky=%d bytes=%d" % (len(booth), len(pict), len(fansky), len(out)))
+    print("OK booth=%d pict=%d fansky=%d (bundles=%d) bytes=%d" % (len(booth), len(pict), len(fansky), len(fansky_bundles), len(out)))
 
 main()
