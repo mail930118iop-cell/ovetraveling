@@ -129,7 +129,7 @@ def fansky_bundle_items():
     page = fetch(FANSKY_URL)[0].decode("utf-8", "replace")
     out, seen = [], set()
     pattern = re.compile(
-        r"""<a\b[^>]*href=["'](/mail930115iop/bundle/[^"']+)["'][^>]*>(.*?)</a>""",
+        r"""<a\b[^>]*href=["']((?:https?://(?:www\.)?fansky\.net)?/mail930115iop/bundle/[^"']+)["'][^>]*>(.*?)</a>""",
         re.I | re.S
     )
     for match in pattern.finditer(page):
